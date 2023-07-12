@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const MONGO_URI = 'YOUR_URI_HERE';
+const MONGO_URI = 'mongodb+srv://dmoreira:ERMeWMz0U5aemSuk@cluster.od5ueww.mongodb.net/?retryWrites=true&w=majority';
 
 mongoose.connect(MONGO_URI, {
   // options for the connect method to parse the URI
@@ -37,21 +37,71 @@ const Species = mongoose.model('species', speciesSchema);
 
 
 // TODO: create a schema for 'planet' and use it to create the model for it below
+const planetSchema = new Schema({
+  name: String,
+  rotation_period: Number,
+  orbital_period: Number,
+  diameter: Number,
+  climate: String,
+  gravity: String,
+  terrain: String,
+  surface_water: String,
+  population: Number,
+  
+});
 
-
+const Planet = mongoose.model('planet', planetSchema);
 
 // TODO: create a schema for 'film' and use it to create the model for it below
 
+const filmSchema = new Schema({
+  title: String,
+  episode_id: Number,
+  opening_Crawl: String,
+  director: Number,
+  producer: String,
+  release_date: Date,
+  
+});
+
+const Film = mongoose.model('films', filmSchema);
 
 
 // TODO: create a schema for 'person' and use it to create the model for it below
 
+const peopleSchema = new Schema({
+  name: {type: String, required: true },
+  mass: String,
+  hair_color: String,
+  skin_color: String,
+  eye_color: String,
+  birth_year: String,
+  gender: String,
+  species: String,
+  species_id: {
+    // type of ObjectId makes this behave like a foreign key referencing the 'planet' collection
+    type: Schema.Types.ObjectId,
+    ref: 'species'
+  },
+  homeworld: String, 
+  homeworld_id: {
+    // type of ObjectId makes this behave like a foreign key referencing the 'planet' collection
+    type: Schema.Types.ObjectId,
+    ref: 'planet'
+  }, 
+  height: Number, 
+  // films: { keys: title (String), id (ObjectId referencing 'film')
+  // }
+  
+});
+
+const Person = mongoose.model('people', peopleSchema);
 
 
 // exports all the models in an object to be used in the controller
 module.exports = {
   Species,
-  // Planet,
-  // Film,
-  // Person
+  Planet,
+  Film,
+  Person
 };
